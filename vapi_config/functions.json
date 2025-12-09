@@ -1,0 +1,80 @@
+[
+  {
+    "name": "send_payment_link",
+    "description": "Send SMS with payment link to the customer's phone number. Call this function when the customer agrees to receive the payment link.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "customer_confirmed": {
+          "type": "boolean",
+          "description": "Whether the customer confirmed they want to receive the payment link"
+        }
+      },
+      "required": ["customer_confirmed"]
+    },
+    "async": false
+  },
+  {
+    "name": "confirm_payment",
+    "description": "Mark that the customer has confirmed they will make the payment. Call this when customer explicitly states they will pay.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "payment_commitment": {
+          "type": "string",
+          "description": "Customer's commitment - 'immediate', 'today', 'tomorrow', or 'later'",
+          "enum": ["immediate", "today", "tomorrow", "later"]
+        },
+        "notes": {
+          "type": "string",
+          "description": "Any additional notes or comments from the customer"
+        }
+      },
+      "required": ["payment_commitment"]
+    },
+    "async": false
+  },
+  {
+    "name": "customer_disputed",
+    "description": "Record when customer disputes the bill amount or claims they already paid. Call this to flag the bill for investigation.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "dispute_type": {
+          "type": "string",
+          "description": "Type of dispute",
+          "enum": ["already_paid", "wrong_amount", "not_my_bill", "other"]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Customer's explanation for the dispute"
+        },
+        "payment_reference": {
+          "type": "string",
+          "description": "Payment reference number if customer claims they already paid"
+        }
+      },
+      "required": ["dispute_type", "reason"]
+    },
+    "async": false
+  },
+  {
+    "name": "schedule_callback",
+    "description": "Schedule a callback when customer is not available or requests to be called later",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "preferred_time": {
+          "type": "string",
+          "description": "Customer's preferred callback time"
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for callback request"
+        }
+      },
+      "required": ["preferred_time"]
+    },
+    "async": false
+  }
+]

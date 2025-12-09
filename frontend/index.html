@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adani Bill Collection - AI Agent Dashboard</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>⚡ Adani Bill Collection</h1>
+                <span class="subtitle">AI-Powered Voice Agent</span>
+            </div>
+            <div class="header-stats">
+                <div class="stat-card">
+                    <span class="stat-label">Total Bills</span>
+                    <span class="stat-value" id="totalBills">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Pending</span>
+                    <span class="stat-value pending" id="pendingBills">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Paid</span>
+                    <span class="stat-value success" id="paidBills">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Collection Rate</span>
+                    <span class="stat-value" id="collectionRate">0%</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <nav class="nav">
+                <button class="nav-item active" data-view="dashboard">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-view="bills">
+                    <span class="icon">📄</span>
+                    <span>Bills</span>
+                </button>
+                <button class="nav-item" data-view="calls">
+                    <span class="icon">📞</span>
+                    <span>Call Logs</span>
+                </button>
+                <button class="nav-item" data-view="payments">
+                    <span class="icon">💳</span>
+                    <span>Payments</span>
+                </button>
+                <button class="nav-item" data-view="analytics">
+                    <span class="icon">📈</span>
+                    <span>Analytics</span>
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard View -->
+            <section id="dashboard-view" class="view active">
+                <div class="view-header">
+                    <h2>Dashboard Overview</h2>
+                    <button class="btn btn-primary" id="refreshDashboard">
+                        <span>🔄</span> Refresh
+                    </button>
+                </div>
+
+                <div class="dashboard-grid">
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <h3>Quick Actions</h3>
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" id="addBillBtn">
+                                <span>➕</span> Add New Bill
+                            </button>
+                            <button class="btn btn-success" id="initiateCallsBtn">
+                                <span>📞</span> Initiate Calls
+                            </button>
+                            <button class="btn btn-info" id="viewPendingBtn">
+                                <span>📋</span> View Pending
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <h3>Recent Call Activity</h3>
+                        <div id="recentActivity" class="activity-list">
+                            <p class="empty-state">No recent activity</p>
+                        </div>
+                    </div>
+
+                    <!-- Overdue Bills -->
+                    <div class="card">
+                        <h3>Overdue Bills</h3>
+                        <div id="overdueBills" class="bills-list">
+                            <p class="empty-state">No overdue bills</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bills View -->
+            <section id="bills-view" class="view">
+                <div class="view-header">
+                    <h2>Bill Management</h2>
+                    <div class="header-actions">
+                        <select id="billStatusFilter" class="filter-select">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="called">Called</option>
+                            <option value="paid">Paid</option>
+                            <option value="overdue">Overdue</option>
+                        </select>
+                        <button class="btn btn-primary" id="addBillBtnAlt">
+                            <span>➕</span> Add Bill
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="billsTable">
+                        <thead>
+                            <tr>
+                                <th>Bill Number</th>
+                                <th>Customer Name</th>
+                                <th>Phone</th>
+                                <th>Amount</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billsTableBody">
+                            <tr>
+                                <td colspan="7" class="empty-state">No bills found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Calls View -->
+            <section id="calls-view" class="view">
+                <div class="view-header">
+                    <h2>Call Logs</h2>
+                    <select id="callStatusFilter" class="filter-select">
+                        <option value="">All Calls</option>
+                        <option value="completed">Completed</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="callsTable">
+                        <thead>
+                            <tr>
+                                <th>Call ID</th>
+                                <th>Customer</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Outcome</th>
+                                <th>Duration</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="callsTableBody">
+                            <tr>
+                                <td colspan="8" class="empty-state">No call logs found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Payments View -->
+            <section id="payments-view" class="view">
+                <div class="view-header">
+                    <h2>Payment Tracking</h2>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table" id="paymentsTable">
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+                                <th>Bill Number</th>
+                                <th>Amount</th>
+                                <th>Method</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="paymentsTableBody">
+                            <tr>
+                                <td colspan="6" class="empty-state">No payments found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Analytics View -->
+            <section id="analytics-view" class="view">
+                <div class="view-header">
+                    <h2>Analytics & Insights</h2>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="card">
+                        <h3>Call Success Rate</h3>
+                        <div class="metric-display">
+                            <span class="metric-value" id="callSuccessRate">0%</span>
+                            <span class="metric-label">Successful Calls</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Average Call Duration</h3>
+                        <div class="metric-display">
+                            <span class="metric-value" id="avgCallDuration">0s</span>
+                            <span class="metric-label">Average Duration</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Payment Conversion</h3>
+                        <div class="metric-display">
+                            <span class="metric-value" id="paymentConversion">0%</span>
+                            <span class="metric-label">Calls to Payment</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Total Collection</h3>
+                        <div class="metric-display">
+                            <span class="metric-value" id="totalCollection">₹0</span>
+                            <span class="metric-label">Amount Collected</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Bill Modal -->
+    <div id="addBillModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Bill</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="addBillForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="customerName">Customer Name *</label>
+                        <input type="text" id="customerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">Phone Number *</label>
+                        <input type="tel" id="customerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email</label>
+                        <input type="email" id="customerEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="consumerNumber">Consumer Number *</label>
+                        <input type="text" id="consumerNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billNumber">Bill Number *</label>
+                        <input type="text" id="billNumber" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billAmount">Bill Amount (₹) *</label>
+                        <input type="number" id="billAmount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date *</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="billingPeriod">Billing Period</label>
+                        <input type="text" id="billingPeriod" placeholder="e.g., Jan 2024">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Bill</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <!-- Configuration - Load config.js first, then API client -->
+    <script src="config.js"></script>
+    <!-- API Base URL can be set via Netlify/Vercel environment variable injection -->
+    <script>
+        // Override API_BASE_URL if set via environment variable (Netlify/Vercel)
+        // This will be replaced at build time if using build-time replacement
+        if (typeof API_BASE_URL !== 'undefined') {
+            window.API_BASE_URL = API_BASE_URL;
+        }
+    </script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/utils.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

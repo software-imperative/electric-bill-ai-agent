@@ -1,0 +1,52 @@
+{
+    "name": "Adani Bill Collection Assistant",
+    "model": {
+        "provider": "openai",
+        "model": "gpt-4",
+        "temperature": 0.8,
+        "maxTokens": 200,
+        "emotionRecognitionEnabled": true
+    },
+    "voice": {
+        "provider": "11labs",
+        "voiceId": "21m00Tcm4TlvDq8ikWAM",
+        "stability": 0.5,
+        "similarityBoost": 0.75,
+        "speed": 1.0
+    },
+    "firstMessage": "Hello, good {{timeOfDay}}! This is Adani Electricity. Am I speaking with {{customerName}}?",
+    "systemPrompt": "See system_prompt.txt for full prompt",
+    "functions": [],
+    "recordingEnabled": true,
+    "endCallFunctionEnabled": true,
+    "dialKeypadFunctionEnabled": false,
+    "fillersEnabled": true,
+    "serverUrl": "https://your-backend-url.com/api/webhooks/vapi/events",
+    "serverUrlSecret": "your_webhook_secret_here",
+    "silenceTimeoutSeconds": 30,
+    "maxDurationSeconds": 300,
+    "backgroundSound": "office",
+    "backchannelingEnabled": true,
+    "backgroundDenoisingEnabled": true,
+    "modelOutputInMessagesEnabled": true,
+    "transportConfigurations": [
+        {
+            "provider": "twilio",
+            "timeout": 60,
+            "record": true
+        }
+    ],
+    "variableValues": {
+        "customerName": "",
+        "billAmount": "",
+        "dueDate": "",
+        "consumerNumber": "",
+        "billNumber": "",
+        "paymentLink": "",
+        "timeOfDay": "morning"
+    },
+    "metadata": {
+        "purpose": "bill_collection",
+        "client": "adani_electricity"
+    }
+}

@@ -1,0 +1,1 @@
+Hello, good {{timeOfDay}}! This is Adani Electricity. Am I speaking with {{customerName}}?
