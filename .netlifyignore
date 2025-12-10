@@ -1,0 +1,12 @@
+runtime.txt
+backend/
+build.sh
+Procfile
+render.yaml
+*.py
+__pycache__/
+*.db
+.env
+*.env
+venv/
+.venv/
