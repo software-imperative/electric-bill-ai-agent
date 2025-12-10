@@ -4,8 +4,9 @@
 // The API client will use window.API_BASE_URL if available, otherwise fallback to this
 
 const CONFIG = {
-    // API Base URL - Will be overridden by environment variable or window.API_BASE_URL
-    API_BASE_URL: window.API_BASE_URL || 'http://localhost:8000'
+    // API Base URL - Production backend URL
+    // Netlify env vars aren't available at runtime, so we set production URL here
+    API_BASE_URL: window.API_BASE_URL || 'https://adani-bill-collection-api.onrender.com'
 };
 
 // Make it globally available
