@@ -3,8 +3,8 @@ services:
     name: adani-bill-collection-api
     env: python
     plan: free
-    runtime: python-3.11.0
-    buildCommand: pip install -r backend/requirements.txt
+    runtime: python-3.11
+    buildCommand: bash build.sh
     startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
